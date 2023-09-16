@@ -3,11 +3,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
 from .forms import SignUpForm
+from .models import CustomModel
 
 # Create your views here.
 
 
 def home(request):
+    customers = CustomModel.objects.all()
     # Check to see if logging in
     if request.method == "POST":
         username = request.POST["username"]
@@ -24,7 +26,7 @@ def home(request):
             )
             return redirect("home")
     else:
-        return render(request, "home.html", {})
+        return render(request, "home.html", {"customers": customers})
 
 
 # def login_user(request):
