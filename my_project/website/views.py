@@ -66,3 +66,16 @@ def customers(request, pk):
     else:
         messages.success(request, "You Must Be Logged In To View That Page...")
         return redirect("home")
+
+
+def delete_customer(request, pk):
+    if request.user.is_authenticated:
+        customer = CustomModel.objects.get(id=pk)
+        if request.method == "POST":
+            customer.delete()
+            messages.success(request, "Customer Deleted Successfully...")
+            return redirect("home")
+        return render(request, "delete_customer.html")
+    else:
+        messages.success(request, "You Must Be Logged In To Do That...")
+        return redirect("home")
