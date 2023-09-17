@@ -93,3 +93,17 @@ def add_customer(request):
     else:
         messages.success(request, "You Must Be Logged In...")
         return redirect("home")
+
+
+def update_customer(request, pk):
+    if request.user.is_authenticated:
+        current_customer = CustomModel.objects.get(id=pk)
+        form = AddCustomerForm(request.POST or None, instance=current_customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Customer Has Been Updated!")
+            return redirect("home")
+        return render(request, "update_customer.html", {"form": form})
+    else:
+        messages.success(request, "You Must Be Logged In...")
+        return redirect("home")
